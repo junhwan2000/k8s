@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-server-deployment # Deployment 리소스의 이름
+  labels:
+   app: eureka-server # 이 Deployment를 식별하기 위한 라벨
+spec:
+  replicas: 1 # 실행할 Pod의 복제본 수 (여기서는 1개)
+  selector:
+    matchLabels:
+      app: eureka-server # 이 Deployment가 관리할 Pod를 선택하는 라벨 셀렉터
+  template: # 생성될 Pod의 명세 (템플릿)
+    metadata:
+      labels:
+        app: eureka-server # 생성될 Pod에 적용될 라벨 (위 selector와 일치해야 함)
+    spec:
+      containers:
+      - name: eureka-server # Pod 내에서 실행될 컨테이너의 이름
+        image: eureka-server:latest # 사용할 Docker 이미지 (로컬에서 빌드한 이미지 가정)
+        imagePullPolicy: IfNotPresent # 이미지가 로컬(노드)에 있으면 사용 없으면 외부에서 pull 시도
+        ports:
+        - containerPort: 8761 # Config Server Application이 내부적으로 사용하는 포트 (기본 8761)
+
